@@ -25,4 +25,10 @@ class LoginPage(BasePage):
         )
 
     def should_be_user_name(self, user_name):
+        """
+        Checks that the user name is as expected.
+
+        :param user_name: The user name to check for.
+        :return: True if the user name matches the given one, False otherwise.
+        """
         return self.get_text(locators.AccountPage.welcome_name) == user_name

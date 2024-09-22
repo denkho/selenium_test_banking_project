@@ -8,6 +8,20 @@ from pages.account import AccountPage
     "Выполнить пополнение счета (Deposit) на сумму равную N-е число Фибоначчи, где N - это текущий день месяца + 1"
 )
 def test_deposit(driver):
+    """
+    Test depositing a sum equal to the Nth Fibonacci number, where N is the current day of the month + 1.
+
+    Preconditions:
+    - The amount to be deposited is a Fibonacci number.
+    - The deposit transaction is successful.
+
+    Steps:
+    1. Open the website.
+    2. Log in.
+    3. Deposit the amount.
+    4. Verify that the transaction is successful.
+    5. Verify that the balance is increased by the deposited amount.
+    """
 
     # Preconditions
     amount_to_be_deposited = functions.get_fibonacci_from_current_day_number()
