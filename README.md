@@ -24,12 +24,19 @@
     ```
     pip install -r requirements.txt
     ```
-5. Запустите все тесты командой (для этого необходимо находиться в корневой папке проекта):
+5. Если у вас не скачан Selenium Server, то скачайте файл jar сервера из [последнего релиза](https://github.com/SeleniumHQ/selenium/releases/latest)
+
+6. Запустите Grid командой:
+    ```
+    java -jar selenium-server-<version>.jar standalone
+    ```
+
+6. Запустите все тесты командой (для этого необходимо находиться в корневой папке проекта):
     ```
     pytest --alluredir=reports
     ```
 
-6. Для того, чтобы сгенерировать отчет Allure — выполните команду
+7. Для того, чтобы сгенерировать отчет Allure — выполните команду
     ```
     allure serve reports
     ```
