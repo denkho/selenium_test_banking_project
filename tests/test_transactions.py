@@ -1,13 +1,8 @@
 import allure
-import time
-
-from data import functions
-from data.urls import Urls
-from pages.account import AccountPage
 
 
-@allure.title("Проверка наличия обеих транзакций")
-def test_transactions(driver):
+@allure.title("Проверка наличия транзакций депозита и снятия суммы")
+def test_transactions(setup_account_page_to_check_transactions_table):
     """
     This test checks that both deposit and withdraw transactions are present in the transactions table.
 
@@ -23,18 +18,9 @@ def test_transactions(driver):
     Expected result:
     The transactions table contains two transactions.
     """
-    # Preconditions
-    amount = functions.get_fibonacci_from_current_day_number()
 
-    page = AccountPage(driver, Urls.LOGIN)
-    page.open()
-    page.login()
-    page.deposit(amount)
+    page = setup_account_page_to_check_transactions_table
 
-    page.withdraw(amount)
-    time.sleep(5)
-
-    # Test
     page.open_transactions_table()
 
     transactions_table = page.get_data_from_transactions_table()

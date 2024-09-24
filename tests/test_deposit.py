@@ -1,13 +1,11 @@
 import allure
 from data import functions
-from data.urls import Urls
-from pages.account import AccountPage
 
 
 @allure.title(
     "Выполнить пополнение счета (Deposit) на сумму равную N-е число Фибоначчи, где N - это текущий день месяца + 1"
 )
-def test_deposit(driver):
+def test_deposit(setup_account_page_to_deposit):
     """
     Test depositing a sum equal to the Nth Fibonacci number, where N is the current day of the month + 1.
 
@@ -16,25 +14,23 @@ def test_deposit(driver):
     - The deposit transaction is successful.
 
     Steps:
-    1. Open the website.
-    2. Log in.
+    1. Get amount to be deposited.
     3. Deposit the amount.
     4. Verify that the transaction is successful.
     5. Verify that the balance is increased by the deposited amount.
     """
 
-    # Preconditions
+    page, balance_before = setup_account_page_to_deposit
+
     amount_to_be_deposited = functions.get_fibonacci_from_current_day_number()
     deposit_successfull_message = "Deposit Successful"
 
-    page = AccountPage(driver, Urls.LOGIN)
-    page.open()
-    page.login()
-
-    # Test
     page.deposit(amount_to_be_deposited)
 
-    assert page.should_be_transaction_info_message(deposit_successfull_message)
-    assert page.should_be_same_amount_on_balance_equal_to_deposited(
-        amount_to_be_deposited
-    )
+    assert page.should_be_transaction_info_message(
+        deposit_successfull_message
+    ), "Successful transaction message differs or absent"
+
+    assert page.should_be_correct_balance_after_deposit(
+        balance_before, amount_to_be_deposited
+    ), f"Current balance is <{page.get_current_balance()}>, but it should be <{int(balance_before) + amount_to_be_deposited}>"

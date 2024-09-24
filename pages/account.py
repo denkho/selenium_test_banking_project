@@ -20,7 +20,9 @@ class AccountPage(LoginPage):
         :param amount: The amount to deposit.
         """
         self.click_to_element(locators.AccountPage.deposit_form_button)
-        self.fill_in_input_field(locators.AccountPage.input_amount_deposit_field, amount)
+        self.fill_in_input_field(
+            locators.AccountPage.input_amount_deposit_field, amount
+        )
         self.click_to_element(locators.AccountPage.deposit_action_button)
 
     def withdraw(self, amount):
@@ -30,7 +32,9 @@ class AccountPage(LoginPage):
         :param amount: The amount to withdraw.
         """
         self.click_to_element(locators.AccountPage.withdrawl_form_button)
-        self.fill_in_input_field(locators.AccountPage.input_amount_withdraw_field, amount)
+        self.fill_in_input_field(
+            locators.AccountPage.input_amount_withdraw_field, amount
+        )
         self.click_to_element(locators.AccountPage.withdrawl_action_button)
 
     def open_transactions_table(self):
@@ -55,15 +59,16 @@ class AccountPage(LoginPage):
         """
         return self.get_text(locators.AccountPage.balance_amount)
 
-    def should_be_same_amount_on_balance_equal_to_deposited(self, amount):
+    def should_be_correct_balance_after_deposit(self, balance_before: str, amount: int):
         """
-        Checks that the current balance is the same as the given amount.
+        Checks that the current balance is the same as the given balance before plus the given amount.
 
+        :param balance_before: The balance before the transaction.
         :param amount: The amount to check against.
         """
-        return self.get_text(locators.AccountPage.balance_amount) == str(amount)
+        return int(self.get_current_balance()) == int(balance_before) + amount
 
-    def should_be_correct_balance(self, balance_before: str, amount: int):
+    def should_be_correct_balance_after_withdrawl(self, balance_before: str, amount: int):
         """
         Checks that the current balance is the same as the given balance before minus the given amount.
 
@@ -71,7 +76,6 @@ class AccountPage(LoginPage):
         :param amount: The amount of the transaction.
         """
         return int(self.get_current_balance()) == int(balance_before) - amount
-    
 
     def get_data_from_transactions_table(self):
         """
@@ -81,21 +85,24 @@ class AccountPage(LoginPage):
         """
         table = self.element_is_visible(locators.AccountPage.transactions_table)
         transactions = []
-        for row in table.find_elements(By.CSS_SELECTOR, 'tr'):
-            transactions.append([d.text for d in row.find_elements(By.CSS_SELECTOR, 'td')])
+        for row in table.find_elements(By.CSS_SELECTOR, "tr"):
+            transactions.append(
+                [d.text for d in row.find_elements(By.CSS_SELECTOR, "td")]
+            )
 
         for i in range(1, len(transactions)):
-            dtm = datetime.strptime(transactions[i][0], '%b %d, %Y %I:%M:%S %p').strftime('%d %b %Y %H:%M:%S')
+            dtm = datetime.strptime(
+                transactions[i][0], "%b %d, %Y %I:%M:%S %p"
+            ).strftime("%d %b %Y %H:%M:%S")
             transactions[i][0] = dtm
 
         return transactions
-
 
     def get_transactions_table_csv_file(self):
         """
         Saves the transactions table as a CSV file named 'transactions.csv' in the 'data' folder.
         """
         table = self.get_data_from_transactions_table()
-        with open('data/transactions.csv', 'w', newline='') as f:
+        with open("data/transactions.csv", "w", newline="") as f:
             writer = csv.writer(f)
             writer.writerows(table)
