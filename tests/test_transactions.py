@@ -19,7 +19,7 @@ def test_transactions(setup_account_page_to_check_transactions_table):
     The transactions table contains two transactions.
     """
 
-    page = setup_account_page_to_check_transactions_table
+    page, transactions = setup_account_page_to_check_transactions_table
 
     page.open_transactions_table()
 
@@ -34,3 +34,8 @@ def test_transactions(setup_account_page_to_check_transactions_table):
     assert (
         len(transactions_table) == 3
     ), "Transactions has not been written in the table or some other problem"
+
+    for i in range(len(transactions)):
+        assert (
+            transactions[i] == transactions_table[i + 1]
+        ), f"Transaction done is <{transactions[i]}>, but in the table it is <{transactions_table[i + 1]}>"

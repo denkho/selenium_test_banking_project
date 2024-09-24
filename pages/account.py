@@ -4,6 +4,7 @@ from datetime import datetime
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 
+from data import functions
 from pages import locators
 from pages.login import LoginPage
 
@@ -13,6 +14,7 @@ class AccountPage(LoginPage):
     def __init__(self, driver: WebDriver, url):
         super().__init__(driver, url)
 
+    @functions.get_transaction_info
     def deposit(self, amount):
         """
         Perform a deposit of the given amount.
@@ -25,6 +27,7 @@ class AccountPage(LoginPage):
         )
         self.click_to_element(locators.AccountPage.deposit_action_button)
 
+    @functions.get_transaction_info
     def withdraw(self, amount):
         """
         Perform a withdraw of the given amount.
@@ -41,9 +44,7 @@ class AccountPage(LoginPage):
         """
         Opens the transactions table page.
         """
-        self.driver.implicitly_wait(10)
-        self.driver.find_element(By.XPATH, locators.AccountPage.transactions_form_button[1]).click()
-
+        self.click_to_element(locators.AccountPage.transactions_form_button)
 
     def should_be_transaction_info_message(self, message):
         """
@@ -70,7 +71,9 @@ class AccountPage(LoginPage):
         """
         return int(self.get_current_balance()) == int(balance_before) + amount
 
-    def should_be_correct_balance_after_withdrawl(self, balance_before: str, amount: int):
+    def should_be_correct_balance_after_withdrawl(
+        self, balance_before: str, amount: int
+    ):
         """
         Checks that the current balance is the same as the given balance before minus the given amount.
 
