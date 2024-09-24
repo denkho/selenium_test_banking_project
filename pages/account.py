@@ -41,7 +41,9 @@ class AccountPage(LoginPage):
         """
         Opens the transactions table page.
         """
-        self.click_to_element(locators.AccountPage.transactions_form_button)
+        self.driver.implicitly_wait(10)
+        self.driver.find_element(By.XPATH, locators.AccountPage.transactions_form_button[1]).click()
+
 
     def should_be_transaction_info_message(self, message):
         """
