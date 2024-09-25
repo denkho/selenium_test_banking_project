@@ -106,11 +106,10 @@ class AccountPage(LoginPage):
 
         return transactions
 
-    def get_transactions_table_csv_file(self):
+    def get_transactions_table_csv_file(self, transactions_table):
         """
         Saves the transactions table as a CSV file named 'transactions.csv' in the 'data' folder.
         """
-        table = self.get_data_from_transactions_table()
         with open("data/transactions.csv", "w", newline="") as f:
             writer = csv.writer(f)
-            writer.writerows(table)
+            writer.writerows(transactions_table)

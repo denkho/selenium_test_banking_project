@@ -31,7 +31,7 @@ def test_transactions(setup_account_page_to_check_transactions_table):
         transactions_table = page.get_data_from_transactions_table()
 
     with allure.step("Сохраняем данные о транзакциях в CSV файл"):
-        page.get_transactions_table_csv_file()
+        page.get_transactions_table_csv_file(transactions_table)
         allure.attach.file(
             "data/transactions.csv",
             name="Transactions",
