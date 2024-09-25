@@ -26,8 +26,9 @@ class AccountPage(LoginPage):
             locators.AccountPage.input_amount_deposit_field, amount
         )
         self.click_to_element(locators.AccountPage.deposit_action_button)
+        time = datetime.now().strftime("%d %b %Y %H:%M:%S")
+        return [time, str(amount), 'Credit']
 
-    @functions.get_transaction_info
     def withdraw(self, amount):
         """
         Perform a withdraw of the given amount.
@@ -39,6 +40,8 @@ class AccountPage(LoginPage):
             locators.AccountPage.input_amount_withdraw_field, amount
         )
         self.click_to_element(locators.AccountPage.withdrawl_action_button)
+        time = datetime.now().strftime("%d %b %Y %H:%M:%S")
+        return [time, str(amount), 'Debit']
 
     def open_transactions_table(self):
         """
