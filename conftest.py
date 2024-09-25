@@ -1,3 +1,4 @@
+import allure
 import pytest
 from selenium import webdriver
 
@@ -97,3 +98,24 @@ def setup_account_page_to_check_transactions_table(login):
     trasactions = [page.deposit(amount), page.withdraw(amount)]
 
     yield page, trasactions
+
+
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    """
+    pytest hook to add screenshot to Allure report if test fails
+
+    When test fails, this hook takes screenshot of the page and attaches it to the test report in Allure
+    """
+    outcome = yield
+    report = outcome.get_result()
+
+    if report.when == "call" and report.failed:
+        driver = item.funcargs.get("driver")
+        if driver:
+            screenshot = driver.get_screenshot_as_png()
+            allure.attach(
+                screenshot,
+                name="Screenshot",
+                attachment_type=allure.attachment_type.PNG,
+            )
