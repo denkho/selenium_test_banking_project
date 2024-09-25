@@ -11,25 +11,15 @@ from pages.account import AccountPage
 def chrome_options():
     options = webdriver.ChromeOptions()
     options.add_argument("--incognito")
-    # options.add_argument("--headless=new")
     return options
 
 
 @pytest.fixture
 def driver(chrome_options):
 
-    # Закоментировать, если требуется локальный запуск
-    # grid_url = "http://localhost:4444/wd/hub"
+    grid_url = "http://localhost:4444/wd/hub"
 
-    # driver = webdriver.Remote(
-    #     command_executor=grid_url,
-    #     options=chrome_options
-    # )
-    # Расскоментировать, если требуется локальный запуск
-
-    driver = webdriver.Chrome(
-        options=chrome_options
-    )  # для локального запуска не в GRID
+    driver = webdriver.Remote(command_executor=grid_url, options=chrome_options)
 
     yield driver
     driver.quit()
