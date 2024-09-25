@@ -4,7 +4,7 @@
 
 1. Откройте терминал. Перейдите в папку, куда планируете клонировать репозиторий. Клонируйте репозиторий на локальную машину с помощью команды в терминале:
     ```
-    git clone https://gitverse.ru/den_kho/selenium_test_banking_project.git
+    git clone https://github.com/denkho/selenium_test_banking_project.git
     ```
 
 2. Если на локальной машине не установлен Python, то скачайте его с официального сайта https://www.python.org/downloads/ и установите.
